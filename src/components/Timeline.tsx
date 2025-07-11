@@ -3,7 +3,7 @@
 
 import { VerticalTimeline, VerticalTimelineElement } from 'react-vertical-timeline-component';
 import 'react-vertical-timeline-component/style.min.css';
-import { StarIcon, BriefcaseIcon, AcademicCapIcon, HandRaisedIcon, SpeakerWaveIcon } from '@heroicons/react/24/solid';
+import { StarIcon, BriefcaseIcon, AcademicCapIcon, HandRaisedIcon } from '@heroicons/react/24/solid';
 
 const events = [
   {
