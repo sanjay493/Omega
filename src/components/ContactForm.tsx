@@ -7,11 +7,33 @@ const ContactForm = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
+  const [status, setStatus] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission
-    console.log({ name, email, message });
+    setStatus('sending');
+
+    try {
+      const res = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, email, message }),
+      });
+
+      if (res.ok) {
+        setStatus('success');
+        setName('');
+        setEmail('');
+        setMessage('');
+      } else {
+        setStatus('error');
+      }
+    } catch (error) {
+      console.error(error);
+      setStatus('error');
+    }
   };
 
   return (
@@ -60,10 +82,21 @@ const ContactForm = () => {
           <button
             type="submit"
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            disabled={status === 'sending'}
           >
-            Send Message
+            {status === 'sending' ? 'Sending...' : 'Send Message'}
           </button>
         </div>
+        {status === 'success' && (
+          <p className="text-green-500 text-center mt-4">
+            Message sent successfully!
+          </p>
+        )}
+        {status === 'error' && (
+          <p className="text-red-500 text-center mt-4">
+            Something went wrong. Please try again.
+          </p>
+        )}
       </form>
     </div>
   );
